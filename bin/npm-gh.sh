@@ -2,15 +2,6 @@
 # A simple npm wrapper for using GitHub as a light-weight npm registry.
 #
 
-# initial set-up
-PACKAGE_DIR=$( pwd )
-PACKAGE_JSON=$PACKAGE_DIR/package.json
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -L)"
-SCRIPT_NAME=$( basename "${BASH_SOURCE[0]}" )
-BASE_DIR=$(cd "${SCRIPT_DIR}/.." && pwd)
-JSON_PARSER=$BASE_DIR/node_modules/JSON.sh/JSON.sh
-TMP_DIR=~/tmp/${SCRIPT_NAME}.$$
-PARSED_JSON=${TMP_DIR}/parsed_json
 
 # echo the supplied params, and then exit with an error
 function errExit {
@@ -37,6 +28,34 @@ function getJsonVal {
   prop=\\[\"${1//\./\",\"}\"\\]
   grep ${prop} <${PARSED_JSON} | ( read -r key value ; value=${value#\"} ; value=${value%\"}; echo $value)
 }
+
+# find the fully deferenced location of a file
+function dereferencedFilePath {
+  pushd . > /dev/null
+  filePath="$1";
+  if ([ -h "${filePath}" ])
+  then
+    while([ -h "${filePath}" ])
+    do
+      cd `dirname "$filePath"`
+      filePath=`readlink "${filePath}"`
+    done
+  fi
+  cd `dirname ${filePath}` > /dev/null
+  filePath=`pwd -L`;
+  popd  > /dev/null
+  echo "$filePath"
+}
+
+# initialise bits and pieces
+PACKAGE_DIR=`pwd -L`
+PACKAGE_JSON=$PACKAGE_DIR/package.json
+SCRIPT_DIR=`dereferencedFilePath "${BASH_SOURCE[0]}"`
+SCRIPT_NAME=`basename "${BASH_SOURCE[0]}"`
+BASE_DIR=`cd "${SCRIPT_DIR}/.." >/dev/null && pwd`
+JSON_PARSER=$BASE_DIR/node_modules/JSON.sh/JSON.sh
+TMP_DIR=~/tmp/${SCRIPT_NAME}.$$
+PARSED_JSON=${TMP_DIR}/parsed_json
 
 # pre-flight checks for the existence of npm, git, the JSON.sh parser,
 # and a package.json in the current working directory
@@ -105,7 +124,7 @@ then
 fi
 
 cd ${PACKAGE_DIR}
-tar -cvzf                               \
+tar -czf                                \
   ${TMP_DIR}/${name}-${version}.tgz     \
   -X ${TMP_DIR}/exclusions              \
   .
@@ -116,23 +135,25 @@ tar -cvzf                               \
 cd ${TMP_DIR}
 mkdir registry
 cd registry
-git init
-git checkout -b ${name}/${version}
+git init -q
+git checkout -qb ${name}/${version}
 git remote add origin ${registryUrl}
 
 # try to pull an existing version, just in case it exists,
 # but then over-write it if it does
 git pull origin ${name}/${version}
-git rm -rf *
+git rm -rfq *
 
-tar xvf ${TMP_DIR}/${name}-${version}.tgz
+tar xf ${TMP_DIR}/${name}-${version}.tgz
 git add *
-git commit -m "Added ${name} @ ${version}. package.json dependency = \"${name}\": \"git+ssh://${registryUrl}#${name}/${version}\""
+git commit -m "Added ${name}/${version}. package.json dependency = \"${name}\": \"git+ssh://${registryUrl}#${name}/${version}\""
 git push origin ${name}/${version}
 
-echo Added ${name}-${version} to ${registryUrl}
+echo
+echo Added ${name}/${version} to ${registryUrl}
 echo Get it by adding the following dependency to your package.json:
 echo "\"${name}\": \"git+ssh://${registryUrl}#${name}/${version}\""
+echo
 
 # Tidy up
 cd ${PACKAGE_DIR}
