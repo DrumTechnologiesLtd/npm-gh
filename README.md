@@ -28,7 +28,7 @@ First of all, you'll need [npm][#NPM].
 
 Then at a command-line:
 
-    npm install -g  git://github.com/NetDevLtd/npm-gh.git#npm-gh/0.0.1-RC
+    npm install -g  git://github.com/NetDevLtd/npm-gh.git#npm-gh/0.0.1
 
 Yep, that's right, `npm-gh` uses its own repo as a GitHub-backed *public* npm registry for itself.
 
