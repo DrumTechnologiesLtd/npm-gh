@@ -49,7 +49,7 @@ In another package's which depends on `$myPackage` you should add the following 
 
     "$myPackage": "git+ssh://git@github.com:$GitHubAccount/$RegistryRepo.git#$myPackage/$myVersion"
 
-`git+ssh:` is necessary for `$RegistryRepo`s which are private, otherwise `git:` should be sufficient.
+`git+ssh://git@github.com:...` is necessary for `$RegistryRepo`s which are private, otherwise `git://@github.com:..` should be sufficient.
 
 If the above registry properties do not exist, or if you invoked `npm-gh` in any other way, `npm` is called instead.
 
