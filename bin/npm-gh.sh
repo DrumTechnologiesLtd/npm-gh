@@ -5,7 +5,7 @@
 # initial set-up
 PACKAGE_DIR=$( pwd )
 PACKAGE_JSON=$PACKAGE_DIR/package.json
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -L)"
 SCRIPT_NAME=$( basename "${BASH_SOURCE[0]}" )
 BASE_DIR=$(cd "${SCRIPT_DIR}/.." && pwd)
 JSON_PARSER=$BASE_DIR/node_modules/JSON.sh/JSON.sh
