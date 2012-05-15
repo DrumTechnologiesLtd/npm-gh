@@ -1,0 +1,30 @@
+{
+  "name": "npm-gh",
+  "registry": {
+    "type": "git",
+    "url": "git@github.com:NetDevLtd/npm-gh.git"
+  },
+  "version": "0.0.1",
+  "description": "A simple npm wrapper for using GitHub as a light-weight npm registry",
+  "homepage": "http://netdev.co.uk/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/NetDevLtd/npm-gh.git"
+  },
+  "bin": {
+    "npm-gh": "./bin/npm-gh.sh"
+  },
+  "dependencies": {
+    "JSON.sh": "git://github.com/dominictarr/JSON.sh.git"
+	},
+  "author": {
+    "name": "Mike Bardzinski",
+    "email": "mike.bardzinski@netdev.co.uk"
+  },
+  "scripts": {
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  }
+}

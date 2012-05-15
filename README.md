@@ -1,6 +1,6 @@
 # npm-gh
 
-A simple [npm][#NPM] wrapper, using GitHub as a light-weight npm registry for publishing.
+A simple [npm][#NPM] bash wrapper, to use GitHub as a light-weight npm registry for publishing.
 
 Invokes `npm $*`, UNLESS:
 * the first argument is `publish`, AND
@@ -28,12 +28,34 @@ I did not want:
 
 # Installation
 
+First of all, you'll need [npm][#NPM].
+
+Then clone this repo, and run `npm install -g`.
 
 # Use
 
+In your package.json you need the following:
+
+    "name": "$myPackage",
+    "version": "$myVersion",
+    "registry": {
+      "type": "git",
+      "url": "git@github.com:$GitHubAccount/$RegistryRepo.git
+    }
+
+You can then run `npm-gh publish`, and it will publish version `$myVersion` of `$myPackage` to `$RegistryRepo` on `$GitHubAccount`, assuming you have the correct GitHub permissions to do so.
+
+In another package's which depends on `$myPackage` you should add the following to your package.json dependency list:
+
+    "$myPackage": "git+ssh://git@github.com:$GitHubAccount/$RegistryRepo.git#$myPackage/$myVersion"
+
+`git+ssh:` is necessary for `$RegistryRepo`s which are private, otherwise `git:` should be sufficient.
+
+If the above registry properties do not exist, or if you invoked `npm-gh` in any other way, `npm` is called instead.
+
 # License
 
-This package is made available under the [MIT][#MIT] License.
+This package is made available under the MIT License.
 
 [#NPM]: http://npmjs.org/
 [#MIT]: http://en.wikipedia.org/wiki/MIT_License
