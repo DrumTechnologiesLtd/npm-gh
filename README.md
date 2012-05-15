@@ -53,6 +53,12 @@ In another package's which depends on `$myPackage` you should add the following 
 
 If the above registry properties do not exist, or if you invoked `npm-gh` in any other way, `npm` is called instead.
 
+**Note**: `npm-gh` will allow you to update an existing published version.
+While this is bad practice, the script allows it to keep it simple.
+It also allows for snapshot / develop versions to change during development / testing / integration before a formal release is made.
+
+Removal and pruning of obsolete versions of packages is currently only possible by deleting the appropriate branches in the $RegistryRepo.
+
 # License
 
 This package is made available under the MIT License.
