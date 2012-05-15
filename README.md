@@ -61,7 +61,7 @@ Removal and pruning of obsolete versions of packages is currently only possible 
 
 # License
 
-This package is made available under the MIT License.
+This package is made available under the [MIT][#MIT] License.
 
 [#NPM]: http://npmjs.org/
 [#MIT]: http://en.wikipedia.org/wiki/MIT_License
