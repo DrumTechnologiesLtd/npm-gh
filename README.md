@@ -27,9 +27,11 @@ I don't care about:
 First of all, you'll need [npm][#NPM].
 
 Then at a command-line:
+
     npm install -g  git+ssh://git@github.com:NetDevLtd/npm-gh.git#npm-gh/0.0.1-RC
 
-Yep, that's right, the `npm-gh` uses its own repo as a GitHub-backed *public* npm registry for itself.
+Yep, that's right, `npm-gh` uses its own repo as a GitHub-backed *public* npm registry for itself.
+
 I may also publish on npmjs.org. But not today.
 
 # Use
@@ -59,7 +61,8 @@ In another package which depends on `$myPackage` you should add the following to
 
 `npm publish` allows you to specify tarballs and / or directories to publish.
 
-`npm-gh` currently only allows you to publish your current working directory. The next minor release will address that.
+`npm-gh` currently only allows you to publish your current working directory.
+The next release will address that.
 
 ### Private packages
 
