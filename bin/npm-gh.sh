@@ -127,12 +127,12 @@ git rm -rf *
 
 tar xvf ${TMP_DIR}/${name}-${version}.tgz
 git add *
-git commit -m "Added ${name}-${version}. package.json dependency = \"${name}\": \"git+ssh://${registryUrl}#${name}-${version}\""
+git commit -m "Added ${name} @ ${version}. package.json dependency = \"${name}\": \"git+ssh://${registryUrl}#${name}/${version}\""
 git push origin ${name}/${version}
 
 echo Added ${name}-${version} to ${registryUrl}
 echo Get it by adding the following dependency to your package.json:
-echo "\"${name}\": \"git+ssh://${registryUrl}#${name}-${version}\""
+echo "\"${name}\": \"git+ssh://${registryUrl}#${name}/${version}\""
 
 # Tidy up
 cd ${PACKAGE_DIR}
