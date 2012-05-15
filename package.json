@@ -4,7 +4,7 @@
     "type": "git",
     "url": "git@github.com:NetDevLtd/npm-gh.git"
   },
-  "version": "0.0.1",
+  "version": "0.0.1-RC",
   "description": "A simple npm wrapper for using GitHub as a light-weight npm registry",
   "homepage": "http://netdev.co.uk/",
   "repository": {
