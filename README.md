@@ -28,7 +28,7 @@ First of all, you'll need [npm][#NPM].
 
 Then at a command-line:
 
-    npm install -g  git+ssh://git@github.com:NetDevLtd/npm-gh.git#npm-gh/0.0.1-RC
+    npm install -g  git://github.com:NetDevLtd/npm-gh.git#npm-gh/0.0.1-RC
 
 Yep, that's right, `npm-gh` uses its own repo as a GitHub-backed *public* npm registry for itself.
 
@@ -53,7 +53,9 @@ In another package which depends on `$myPackage` you should add the following to
 
     "$myPackage": "git+ssh://git@github.com:$GitHubAccount/$RegistryRepo.git#$myPackage/$myVersion"
 
-`git+ssh://git@github.com:...` is necessary for `$RegistryRepo`s which are private, otherwise `git://@github.com:..` should be sufficient.
+`git+ssh://git@github.com:...` is necessary for `$RegistryRepo`s which are private.
+
+`git://@github.com:..` should be sufficient for `$RegistryRepo`s which are public.
 
 ## Notes
 

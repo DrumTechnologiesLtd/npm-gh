@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git@github.com:NetDevLtd/npm-gh.git"
   },
-  "description": "A simple npm wrapper for using GitHub as a light-weight npm registry",
+  "description": "A simple npm bash wrapper, to use GitHub as a light-weight npm registry for publishing.",
   "license": "MIT",
   "homepage": "https://github.com/NetDevLtd/npm-gh.git",
   "repository": {
