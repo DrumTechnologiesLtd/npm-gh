@@ -32,7 +32,9 @@ Then at a command-line:
 
 Yep, that's right, `npm-gh` uses its own repo as a GitHub-backed *public* npm registry for itself.
 
-I may also publish on npmjs.org. But not today.
+You can also get it from the public npm registry at http://search.npmjs.org, so this should also work:
+
+    npm install -g npm-gh
 
 # Use
 
