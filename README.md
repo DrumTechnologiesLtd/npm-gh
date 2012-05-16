@@ -44,7 +44,7 @@ In your package.json you need the following:
     "version": "$myVersion",
     "registry": {
       "type": "git",
-      "url": "git@github.com:$GitHubAccount/$RegistryRepo.git
+      "url": "git@github.com:$GitHubAccount/$RegistryRepo.git"
     }
 
 If any of the above properties do not exist, or if you invoked `npm-gh` in any other way, `npm` is called instead.
