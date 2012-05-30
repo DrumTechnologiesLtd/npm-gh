@@ -68,6 +68,12 @@ In another package which depends on `$myPackage` you should add the following to
 `npm-gh` currently only allows you to publish your current working directory.
 The next release will address that.
 
+Specifying optionally one or more directories on the command line had been added in v0.0.2-dev:
+
+    npm-gh publish [path1] [path2] ...
+
+It will check to see if the path is a directory, if it contains a package.json and if the package.json contains the required additional properties for `npm-gh`; if any of these fail, it skips that path and moves on.
+
 ### Private packages
 
 `npm-gh` ignores the `private` property of your package.json, as the whole point was to be able to publish private packages to a potentially private GitHub repo, instead of the public npm registry.
