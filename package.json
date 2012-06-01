@@ -1,6 +1,6 @@
 {
   "name": "npm-gh",
-  "version": "0.0.2-RC",
+  "version": "0.0.2",
   "registry": {
     "type": "git",
     "url": "git@github.com:NetDevLtd/npm-gh.git"
