@@ -41,19 +41,17 @@ function getJsonVal {
 # find the fully deferenced location of a file
 function dereferencedFilePath {
   pushd . > /dev/null
-  filePath="$1";
-  if ([ -h "${filePath}" ])
-  then
-    while([ -h "${filePath}" ])
-    do
-      cd `dirname "$filePath"`
-      filePath=`readlink "${filePath}"`
-    done
-  fi
-  cd `dirname ${filePath}` > /dev/null
-  filePath=`pwd -L`;
+  _source="$1"
+  _dir="$( dirname "$_source" )"
+  while [ -h "$_source" ]
+  do
+    _source="$(readlink "$_source")"
+    [[ $_source != /* ]] && _source="$_dir/$_source"
+    _dir="$( cd -P "$( dirname "$_source"  )" && pwd )"
+  done
+  _dir="$( cd -P "$( dirname "$_source" )" && pwd )"
   popd  > /dev/null
-  echo "$filePath"
+  echo "$_dir"
 }
 
 # initialise bits and pieces
