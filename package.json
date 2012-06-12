@@ -27,7 +27,7 @@
     "npm-gh": "./bin/npm-gh.sh"
   },
   "dependencies": {
-    "JSON.sh": "git://github.com/dominictarr/JSON.sh.git"
+    "optimist": "0.3.4"
 	},
   "scripts": {
   },
