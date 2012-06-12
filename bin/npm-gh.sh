@@ -32,10 +32,9 @@ function callNpm {
   exit $?
 }
 
-# extract a JSON value from JSON which has been pre-parsed with JSON.sh
+# extract a JSON value from the json file
 function getJsonVal {
-  prop=\\[\"${1//\./\",\"}\"\\]
-  grep ${prop} <${PARSED_JSON} | ( read -r key value ; value=${value#\"} ; value=${value%\"}; echo $value)
+  node ${JSON_PARSER} -f "$1" -k "$2"
 }
 
 # find the fully deferenced location of a file
@@ -57,10 +56,10 @@ function dereferencedFilePath {
 # initialise bits and pieces
 SCRIPT_DIR=`dereferencedFilePath "${BASH_SOURCE[0]}"`
 SCRIPT_NAME=`basename "${BASH_SOURCE[0]}"`
-BASE_DIR=`cd "${SCRIPT_DIR}/.." >/dev/null && pwd`
-JSON_PARSER=$BASE_DIR/node_modules/JSON.sh/JSON.sh
+MODULE_DIR=`cd "${SCRIPT_DIR}/.." >/dev/null && pwd`
+JSON_PARSER=$MODULE_DIR/lib/getValueFromJson.js
 
-# pre-flight checks for the existence of npm, git, the JSON.sh parser,
+# pre-flight checks for the existence of npm, git and node
 
 if [ -z `which npm` ]
 then
@@ -84,21 +83,22 @@ then
     "Please install git on your system and try again."
 fi
 
-if [ ! -f ${JSON_PARSER} ] || [ ! -x ${JSON_PARSER} ]
+if [ -z `which node` ]
 then
   errExit                                               \
-    "JSON.sh not found, or is not executable"           \
-    "Have you run 'npm install' in ${BASE_DIR} ?"
+    "No 'node' available on the command line."           \
+    "Please install node on your system and try again."
 fi
-
 
 # pre-flight checks complete.
 
+# if no package directories have been specified, use the current working directory
 if [ $# -le 0 ]
 then
   set "`pwd`"
 fi
 
+# iterate through all the package directories
 while [ $# -gt 0 ]
 do
   echo
@@ -111,9 +111,8 @@ do
     PACKAGE_NAME=`basename "${PACKAGE_DIR}"`
     PACKAGE_JSON=$PACKAGE_DIR/package.json
     TMP_DIR=~/tmp/${SCRIPT_NAME}.${PACKAGE_NAME}.$$
-    PARSED_JSON=${TMP_DIR}/parsed_json
 
-    echo "* Checking for ${PACKAGE_JSON}"
+    echo "* Checking for existence of ${PACKAGE_JSON}"
 
     if [ ! -f "${PACKAGE_JSON}" ]
     then
@@ -122,32 +121,28 @@ do
         "Are you sure you are in the right place?"
     else
       # Extract the package name, version, and the registry co-ordinates from the package.json
-      echo "* Creating ${TMP_DIR}"
-      mkdir -p "${TMP_DIR}"
-      "${JSON_PARSER}" <"${PACKAGE_JSON}" >"${PARSED_JSON}"
-
-      name=`getJsonVal name`
-      version=`getJsonVal version`
-      registryType=`getJsonVal registry.type`
-      registryUrl=`getJsonVal registry.url`
+      name=`getJsonVal "${PACKAGE_JSON}" "name"`
+      version=`getJsonVal "${PACKAGE_JSON}" "version"`
+      registryType=`getJsonVal "${PACKAGE_JSON}" "registry/type"`
+      registryUrl=`getJsonVal "${PACKAGE_JSON}" "registry/url"`
 
       # if either the registryType is not "git",
       # or any of the registryUrl, version and package name are empty,
       # this script can't do anything
       if [ "${registryType}" != "git" ] || [ -z "${registryUrl}" ] || [ -z "${name}" ] || [ -z "${version}" ]
       then
-        rm -rf "${TMP_DIR}"
         errNoExit                                                       \
           "Not an npm-gh appropriate package.json in ${PACKAGE_DIR}."   \
           "Are you sure you are in the right place?"
       else
         # create a tarball of the package, excluding:
-        # filespecs in the $BASE_DIR/exclusions file
+        # filespecs in the $MODULE_DIR/exclusions file
         # filespecs in .gitignore (if it exists)
         #
-        echo "* creating tarball of ${PACKAGE_NAME} from ${PACKAGE_DIR}"
+        echo "* creating tarball of '${PACKAGE_NAME}' from '${PACKAGE_DIR}' in '${TMP_DIR}'"
 
-        cp "${BASE_DIR}/exclusions" "${TMP_DIR}/exclusions"
+        mkdir -p "${TMP_DIR}"
+        cp "${MODULE_DIR}/exclusions" "${TMP_DIR}/exclusions"
         if [ -f "${PACKAGE_DIR}/.gitignore" ]
         then
           cat "${PACKAGE_DIR}/.gitignore" >>"${TMP_DIR}/exclusions"
