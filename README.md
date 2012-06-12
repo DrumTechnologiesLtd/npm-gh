@@ -20,16 +20,25 @@ I don't care about:
 * Having a web-based search-able, browse-able interface; GitHub is good enough for me.
 * The unsightly progress & output from `npm-gh`. I might fix it one day, when I care more.
 
-# Current release
+# Release history
 
-*0.0.2*
+* Current release: **0.0.3**
+
+## New in 0.0.3
+
+* Fixed bug where when installed locally, npm-gh would not correctly resolve the symlink to itself in node_modules
+* Removed JSON.sh dependency with a node.js-based JSON parser.
+
+## New in 0.0.2
+
+* Added support for command-line specified package directories
 
 ## Installation
 First of all, you'll need [npm][#NPM].
 
 Then at a command-line:
 
-    npm install -g  git://github.com/NetDevLtd/npm-gh.git#npm-gh/0.0.2
+    npm install -g  git://github.com/NetDevLtd/npm-gh.git#npm-gh/0.0.3
 
 Yep, that's right, `npm-gh` uses its own repo as a GitHub-backed *public* npm registry for itself.
 
@@ -75,7 +84,7 @@ In another package which depends on `$myPackage` you should add the following to
 `npm publish` allows you to specify tarballs and / or directories to publish.
 
 `npm-gh` currently only allows you to publish your current working directory and / or directories.
-Tarballs are not supported in 0.0.2, and are unlikely to be any-time soon, unless someone specifically asks for it.
+Tarballs are not supported in 0.0.3, and are unlikely to be any-time soon, unless someone specifically asks for it.
 
 ## Private packages
 `npm-gh` ignores the `private` property of your package.json, as the whole point was to be able to publish private packages to a potentially private GitHub repo, instead of the public npm registry.
