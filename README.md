@@ -22,7 +22,11 @@ I don't care about:
 
 # Release history
 
-* Current release: **0.0.3**
+* Current release: **0.0.4**
+
+## New in 0.0.4
+
+* Exposed getJsonValue as a command-line executable. Use: getJsonValue <jsonFile> <key>.
 
 ## New in 0.0.3
 
@@ -38,7 +42,7 @@ First of all, you'll need [npm][#NPM].
 
 Then at a command-line:
 
-    npm install -g  git://github.com/NetDevLtd/npm-gh.git#npm-gh/0.0.3
+    npm install -g  git://github.com/NetDevLtd/npm-gh.git#npm-gh/0.0.4
 
 Yep, that's right, `npm-gh` uses its own repo as a GitHub-backed *public* npm registry for itself.
 
