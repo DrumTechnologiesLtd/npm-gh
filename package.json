@@ -1,6 +1,6 @@
 {
   "name": "npm-gh",
-  "version": "0.0.3",
+  "version": "0.0.4-dev",
   "registry": {
     "type": "git",
     "url": "git@github.com:NetDevLtd/npm-gh.git"
@@ -24,7 +24,8 @@
     }
   ],
   "bin": {
-    "npm-gh": "./bin/npm-gh.sh"
+    "npm-gh": "./bin/npm-gh.sh",
+    "getJsonValue": "node ./lib/jsonParser.js"
   },
   "dependencies": {
     "optimist": "0.3.4"
