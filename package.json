@@ -25,7 +25,7 @@
   ],
   "bin": {
     "npm-gh": "./bin/npm-gh.sh",
-    "getJsonValue": "node ./lib/jsonParser.js"
+    "getJsonValue": "./bin/getJsonValue.sh"
   },
   "dependencies": {
     "optimist": "0.3.4"
