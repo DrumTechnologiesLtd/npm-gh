@@ -22,7 +22,12 @@ I don't care about:
 
 # Release history
 
-* Current release: **0.0.4**
+* Current release: **0.0.5**
+
+## New in 0.0.5
+
+* No longer pulls a potentially pre-existing branch from the registry repo, just force pushes the new release.
+  * Speeds the process up, though you loose the record of multiple releases for the same version number.
 
 ## New in 0.0.4
 
