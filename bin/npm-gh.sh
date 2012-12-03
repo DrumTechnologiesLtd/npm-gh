@@ -53,6 +53,14 @@ function dereferencedFilePath {
   echo "$_dir"
 }
 
+function echoComment {
+  echo "${4}"
+  echo "${4}Get it by adding the following dependency to your package.json:"
+  echo "${4}"
+  echo "${4}\"$2\": \"git+ssh://$1#$2/$3\""
+  echo "${4}"
+}
+
 # initialise bits and pieces
 SCRIPT_DIR=`dereferencedFilePath "${BASH_SOURCE[0]}"`
 SCRIPT_NAME=`basename "${BASH_SOURCE[0]}"`
@@ -125,6 +133,7 @@ do
       version=`getJsonVal "${PACKAGE_JSON}" "version"`
       registryType=`getJsonVal "${PACKAGE_JSON}" "registry/type"`
       registryUrl=`getJsonVal "${PACKAGE_JSON}" "registry/url"`
+      tarball="${TMP_DIR}/${name}-${version}.tgz"
 
       # if either the registryType is not "git",
       # or any of the registryUrl, version and package name are empty,
@@ -149,9 +158,9 @@ do
         fi
 
         cd "${PACKAGE_DIR}"
-        tar -czf                                  \
-          "${TMP_DIR}/${name}-${version}.tgz"     \
-          -X "${TMP_DIR}/exclusions"              \
+        tar -czf                      \
+          "${tarball}"                \
+          -X "${TMP_DIR}/exclusions"  \
           .
 
         # Extract the tarball to a (new) branch of the $registryUrl, add, commit and push it up
@@ -164,20 +173,14 @@ do
         git checkout -qb "${name}/${version}"
         git remote add origin "${registryUrl}"
 
-        # try to pull an existing version, just in case it exists,
-        # but then over-write it if it does
-        git pull -q origin "${name}/${version}"
-        git rm -rfq *
-
-        tar xf "${TMP_DIR}/${name}-${version}.tgz"
+        tar xf "${tarball}"
         git add .
-        git commit -qm "New ${name}/${version}."
-        git push -q origin ${name}/${version}
+        (echo "${name}/${version}"; echoComment "${registryUrl}" "${name}" "${version}")  | git commit -qF -
+        git push -fq origin ${name}/${version}:${name}/${version}
 
         echo "*"
         echo "* Added ${name}/${version} to ${registryUrl}"
-        echo "* Get it by adding the following dependency to your package.json:"
-        echo "* \"${name}\": \"git+ssh://${registryUrl}#${name}/${version}\""
+        echoComment "${registryUrl}" "${name}" "${version}" "* "
         echo
 
       fi
