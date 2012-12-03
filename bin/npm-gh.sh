@@ -53,6 +53,14 @@ function dereferencedFilePath {
   echo "$_dir"
 }
 
+function echoComment {
+  echo "${4}"
+  echo "${4}Get it by adding the following dependency to your package.json:"
+  echo "${4}"
+  echo "${4}\"$2\": \"git+ssh://$1#$2/$3\""
+  echo "${4}"
+}
+
 # initialise bits and pieces
 SCRIPT_DIR=`dereferencedFilePath "${BASH_SOURCE[0]}"`
 SCRIPT_NAME=`basename "${BASH_SOURCE[0]}"`
@@ -167,13 +175,12 @@ do
 
         tar xf "${tarball}"
         git add .
-        git commit -qm "${name}/${version}.\n\nGet it by adding the following dependency to your package.json:\n\"${name}\": \"git+ssh://${registryUrl}#${name}/${version}\""
+        (echo "${name}/${version}"; echoComment "${registryUrl}" "${name}" "${version}")  | git commit -qF -
         git push -fq origin ${name}/${version}:${name}/${version}
 
         echo "*"
         echo "* Added ${name}/${version} to ${registryUrl}"
-        echo "* Get it by adding the following dependency to your package.json:"
-        echo "* \"${name}\": \"git+ssh://${registryUrl}#${name}/${version}\""
+        echoComment "${registryUrl}" "${name}" "${version}" "* "
         echo
 
       fi
